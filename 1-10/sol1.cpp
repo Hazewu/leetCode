@@ -23,9 +23,9 @@ using namespace std;
 //         		}
 //         	}
 //         }
-//         return {i, j};
+//         return {};
 // 	}
-// }
+// };
 
 // 时间复杂度O(n^2)
 // 空间复杂度O(1)
@@ -33,22 +33,56 @@ using namespace std;
 
 
 // 方法二：两遍哈希表
-class Solution{
-	vector<int> twoSum(vector<int>& nums, int target){
-		map<int, int> a;				// 建立hash表存放数组元素
-		vector<int> result(2, -1)		// 存放结果，初始值为[-1, -1]
+// class Solution{
+// 	vector<int> twoSum(vector<int>& nums, int target){
+// 		map<int, int> a;				// 建立hash表存放数组元素
+// 		vector<int> result(2, -1);		// 存放结果，初始值为[-1, -1]
         
-        // 存入字典，并且是索引作为value，可能会有问题，key可能会重复，这在map中是不允许的
-		for(int i = 0; i < nums.size(); i++){
-			a.insert(map<int, int>::value_type(nums[i], i));		// 字典类型？必须添加字典对象吗？可以a.insert(nums[i], i)吗
-		}
+//         // 存入字典，并且是索引作为value，可能会有问题，key可能会重复，这在map中是不允许的
+// 		for(int i = 0; i < nums.size(); i++){
+// 			a.insert(map<int, int>::value_type(nums[i], i));		// 字典类型？必须添加字典对象吗？可以a.insert(nums[i], i)吗
+// 		}
 
+// 		for(int i = 0; i < nums.size(); i++){
+//             if(a.count(target - nums[i]) > 0 && (a[target-nums[i]] != i)){		// a.count(target - nums[i]) > 0， 什么意思，map.count(key)，存在返回1，不存在返回0
+//             	                                                                // 因为map中的所有key数据都是不同的，要么有一个，要么不存在
+//             																	// a[target-nums[i]] != i， 表示找到的这个数不能是nums[i]同一个数字
+//             	result[0] = i;
+//             	result[1] = a[target-nums[i]];
+//             	break;
+//             }
+// 		}
+
+// 		return result;
+// 	}
+// };
+
+// 时间复杂度O(n)
+// 空间复杂度O(n)
+
+// 方法三：一遍哈希表
+class Solution{
+public:
+	vector<int> twoSum(vector<int>& nums, int target){
+		map<int, int> a; 
+		vector<int> result(2, -1);
 		for(int i = 0; i < nums.size(); i++){
-            if(a.count(target - nums[i]) > 0 && (a[target-nums[i]] != i))		// a.count(target - nums[i]) > 0， 什么意思，count什么函数
-            																	// a[target-nums[i]] != i， 表示找到的这个数不能是nums[i]同一个数字
-		}
+			if(a.count(target - nums[i])==1 && a[target - nums[i]] != i){
+				// 字典中存在目标值
+				result[0] = a[target - nums[i]];
+				result[1] = i;
+				break;
+			}
+			else{
+				// 不存在，则存放它
+				a.insert({nums[i], i});		// 用花括号括起来也是可以的
+			}
+		}		
+		return result;
 	}
-}
+};
+
+
 
 
 int main(){
